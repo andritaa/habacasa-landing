@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HabaCasa — Your Space Runs Itself</title>
+    <meta name="description" content="AI-native smart environment management. Local-first intelligence that makes your building genuinely smart — without sending your data to the cloud.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#0D0D1A',
+                            900: '#1A1A2E',
+                            800: '#232342',
+                            700: '#2D2D4A',
+                            600: '#3A3A5C',
+                        },
+                        orange: {
+                            DEFAULT: '#FF6B35',
+                            light: '#FF8A5B',
+                            dark: '#E55A2B',
+                        },
+                        accent: {
+                            blue: '#4A9FF5',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ═══════════════════════════════════════════
+           LIQUID GLASS DESIGN SYSTEM
+           Inspired by Apple's Glass Design Language
+           ═══════════════════════════════════════════ */
+
+        /* Base */
+        body {
+            background: #0D0D1A;
+            overflow-x: hidden;
+        }
+
+        /* ── Glass Surfaces ── */
+        .liquid-glass {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.03) 40%,
+                rgba(255, 255, 255, 0.06) 100%
+            );
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+        }
+
+        .liquid-glass-subtle {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.05) 0%,
+                rgba(255, 255, 255, 0.02) 50%,
+                rgba(255, 255, 255, 0.04) 100%
+            );
+            backdrop-filter: blur(16px) saturate(1.3);
+            -webkit-backdrop-filter: blur(16px) saturate(1.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .liquid-glass-strong {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.12) 0%,
+                rgba(255, 255, 255, 0.04) 30%,
+                rgba(255, 255, 255, 0.08) 100%
+            );
+            backdrop-filter: blur(40px) saturate(1.6);
+            -webkit-backdrop-filter: blur(40px) saturate(1.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 12px 48px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        /* ── Light Refraction / Prismatic Edge ── */
+        .glass-refract {
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-refract::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 107, 53, 0.4) 15%,
+                rgba(255, 138, 91, 0.6) 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(74, 159, 245, 0.6) 70%,
+                rgba(139, 92, 246, 0.4) 85%,
+                transparent 100%
+            );
+            border-radius: inherit;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .glass-refract:hover::before {
+            opacity: 1;
+        }
+
+        /* ── Specular Highlight ── */
+        .glass-specular::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.06) 0%,
+                transparent 100%
+            );
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        /* ── Animated Background ── */
+        @keyframes glass-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -20px) scale(1.05); }
+            50% { transform: translate(-10px, 20px) scale(0.98); }
+            75% { transform: translate(-30px, -10px) scale(1.03); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes glass-drift-reverse {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-20px, 30px) scale(1.03); }
+            50% { transform: translate(20px, -15px) scale(0.97); }
+            75% { transform: translate(15px, 25px) scale(1.05); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .orb {
+            border-radius: 50%;
+            filter: blur(80px);
+            will-change: transform;
+        }
+        .orb-1 { animation: glass-drift 20s ease-in-out infinite; }
+        .orb-2 { animation: glass-drift-reverse 25s ease-in-out infinite; }
+        .orb-3 { animation: glass-drift 30s ease-in-out infinite; }
+
+        /* ── Scroll Animations ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Glass Card Hover ── */
+        .glass-card {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 40px rgba(255, 107, 53, 0.06);
+        }
+
+        /* ── Gradient Text ── */
+        .gradient-text {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 40%, #4A9FF5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Glass Buttons ── */
+        .btn-glass-primary {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 100%);
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-glass-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.6s ease;
+        }
+        .btn-glass-primary:hover {
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-glass-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-glass-secondary {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        .btn-glass-secondary:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ── Pulse Glow (softer) ── */
+        @keyframes pulse-glow-soft {
+            0%, 100% { box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
+            50% { box-shadow: 0 8px 40px rgba(255, 107, 53, 0.5), inset 0 1px 0 rgba(255,255,255,0.2); }
+        }
+        .pulse-glow-soft {
+            animation: pulse-glow-soft 4s ease-in-out infinite;
+        }
+
+        /* ── Video Container ── */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Pricing Highlight ── */
+        .pricing-glow {
+            position: relative;
+        }
+        .pricing-glow::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #FF6B35, #4A9FF5, #FF6B35);
+            background-size: 200% 200%;
+            animation: gradient-shift 4s ease infinite;
+            border-radius: 1.5rem;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* ── Section Divider ── */
+        .glass-divider {
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 20%,
+                rgba(255, 107, 53, 0.2) 50%,
+                rgba(255, 255, 255, 0.1) 80%,
+                transparent 100%
+            );
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0D0D1A; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 107, 53, 0.4); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 107, 53, 0.6); }
+
+        /* ── Nav Glass ── */
+        .nav-glass {
+            background: linear-gradient(135deg, rgba(13, 13, 26, 0.6), rgba(26, 26, 46, 0.4));
+            backdrop-filter: blur(32px) saturate(1.5);
+            -webkit-backdrop-filter: blur(32px) saturate(1.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+        .nav-glass.scrolled {
+            background: linear-gradient(135deg, rgba(13, 13, 26, 0.85), rgba(26, 26, 46, 0.7));
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ── Icon Glass Container ── */
+        .icon-glass {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        /* ── Floating animation ── */
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .float-gentle { animation: float-gentle 6s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-navy-950 text-white font-sans antialiased">
+
+    <!-- ═══ Global Background Orbs ═══ -->
+    <div class="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+        <div class="orb orb-1 absolute w-[500px] h-[500px] bg-orange/8 top-[10%] left-[15%]"></div>
+        <div class="orb orb-2 absolute w-[400px] h-[400px] bg-accent-blue/8 bottom-[20%] right-[10%]"></div>
+        <div class="orb orb-3 absolute w-[350px] h-[350px] bg-purple-500/6 top-[60%] left-[50%]"></div>
+    </div>
+
+    <!-- ═══ Navigation ═══ -->
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 nav-glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 liquid-glass-subtle rounded-xl flex items-center justify-center group-hover:border-orange/30 transition-colors">
+                        <span class="text-orange font-bold text-lg">HC</span>
+                    </div>
+                    <span class="text-xl font-semibold hidden sm:block">HabaCasa</span>
+                </a>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="text-gray-400 hover:text-white transition-colors text-sm tracking-wide">Features</a>
+                    <a href="#how-it-works" class="text-gray-400 hover:text-white transition-colors text-sm tracking-wide">How It Works</a>
+                    <a href="#use-cases" class="text-gray-400 hover:text-white transition-colors text-sm tracking-wide">Use Cases</a>
+                    <a href="#pricing" class="text-gray-400 hover:text-white transition-colors text-sm tracking-wide">Pricing</a>
+                </div>
+                
+                <!-- CTA Button -->
+                <a href="https://haba.casa" target="_blank" class="btn-glass-primary text-white px-5 py-2.5 rounded-full font-medium text-sm">
+                    Get Started
+                </a>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden liquid-glass border-t border-white/5">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#features" class="block text-gray-400 hover:text-white transition-colors py-2">Features</a>
+                <a href="#how-it-works" class="block text-gray-400 hover:text-white transition-colors py-2">How It Works</a>
+                <a href="#use-cases" class="block text-gray-400 hover:text-white transition-colors py-2">Use Cases</a>
+                <a href="#pricing" class="block text-gray-400 hover:text-white transition-colors py-2">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ Hero Section ═══ -->
+    <section class="min-h-screen flex items-center pt-20 relative z-10 overflow-hidden">
+        <!-- Hero-specific orbs -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="orb absolute w-[600px] h-[600px] bg-orange/10 top-[20%] left-[10%] orb-1"></div>
+            <div class="orb absolute w-[400px] h-[400px] bg-accent-blue/10 bottom-[15%] right-[15%] orb-2"></div>
+            <div class="orb absolute w-[300px] h-[300px] bg-purple-500/8 top-[50%] right-[30%] orb-3"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Left: Text Content -->
+                <div class="fade-up">
+                    <div class="inline-flex items-center space-x-2 liquid-glass-subtle rounded-full px-4 py-2 mb-8">
+                        <span class="w-2 h-2 bg-orange rounded-full animate-pulse"></span>
+                        <span class="text-orange/90 text-sm font-medium tracking-wide">AI-Native Smart Environments</span>
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] mb-6 tracking-tight">
+                        Your space <br>
+                        <span class="gradient-text">runs itself.</span>
+                    </h1>
+                    
+                    <p class="text-lg sm:text-xl text-gray-400 mb-10 max-w-xl leading-relaxed">
+                        AI-powered building intelligence that lives on your premises. No cloud. No compromises. No one listening.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                        <a href="https://haba.casa" target="_blank" class="btn-glass-primary text-white px-8 py-4 rounded-full font-semibold text-center pulse-glow-soft">
+                            Join the Waitlist →
+                        </a>
+                        <a href="#how-it-works" class="btn-glass-secondary text-white px-8 py-4 rounded-full font-semibold text-center flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Watch Demo</span>
+                        </a>
+                    </div>
+                    
+                    <div class="flex items-center space-x-6 text-sm text-gray-500">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-400/80" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>100% Local Processing</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-green-400/80" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>No Subscription Lock-in</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Video -->
+                <div class="fade-up" style="transition-delay: 0.2s;">
+                    <div class="relative">
+                        <div class="absolute -inset-6 bg-gradient-to-r from-orange/15 via-purple-500/10 to-accent-blue/15 rounded-3xl blur-2xl"></div>
+                        <div class="relative liquid-glass-strong rounded-2xl overflow-hidden">
+                            <div class="video-container">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/mG_5l9cWQBQ?rel=0&modestbranding=1" 
+                                    title="HabaCasa Introduction" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Problem Section ═══ -->
+    <section class="py-24 relative z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center fade-up">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    Smart buildings aren't smart.<br>
+                    <span class="text-gray-600">They're surveilled.</span>
+                </h2>
+                <p class="text-xl text-gray-400 leading-relaxed">
+                    Every "smart" device ships your data to someone else's server. Your voice commands. Your camera feeds. Your routines. <span class="text-orange">Your life.</span>
+                </p>
+                
+                <div class="mt-12 grid sm:grid-cols-3 gap-6">
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-6 text-center relative">
+                        <div class="text-4xl font-bold text-red-400/90 mb-2">87%</div>
+                        <div class="text-gray-500 text-sm">of smart devices send data to third parties</div>
+                    </div>
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-6 text-center relative">
+                        <div class="text-4xl font-bold text-red-400/90 mb-2">24/7</div>
+                        <div class="text-gray-500 text-sm">always listening, always watching</div>
+                    </div>
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-6 text-center relative">
+                        <div class="text-4xl font-bold text-red-400/90 mb-2">$0</div>
+                        <div class="text-gray-500 text-sm">what you're paid for your data</div>
+                    </div>
+                </div>
+                
+                <p class="mt-12 text-2xl font-semibold gradient-text">
+                    It's time to separate intelligence from surveillance.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Features Section ═══ -->
+    <section id="features" class="py-24 relative z-10">
+        <!-- Section background -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="orb absolute w-[500px] h-[500px] bg-orange/5 top-[30%] right-[5%] orb-2"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    Meet <span class="gradient-text">HabaCasa</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    AI that lives in your building, not in the cloud. Private by architecture, not by policy.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature Cards -->
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Voice Control</h3>
+                    <p class="text-gray-400 leading-relaxed">Talk to your building in plain English. Lights, locks, climate — all processed entirely on-device.</p>
+                </div>
+                
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative" style="transition-delay: 0.1s;">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Smart Routines</h3>
+                    <p class="text-gray-400 leading-relaxed">"Good morning" triggers your perfect wake-up sequence. Build routines visually or let AI learn them.</p>
+                </div>
+                
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Local AI Cameras</h3>
+                    <p class="text-gray-400 leading-relaxed">Person detection. Face recognition. Package alerts. All on your hardware. Zero cloud subscriptions.</p>
+                </div>
+                
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative" style="transition-delay: 0.15s;">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Energy Optimisation</h3>
+                    <p class="text-gray-400 leading-relaxed">Real-time tracking. Automated schedules. Monthly reports showing exactly what you saved.</p>
+                </div>
+                
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative" style="transition-delay: 0.25s;">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Unified Dashboard</h3>
+                    <p class="text-gray-400 leading-relaxed">One screen for your entire building. Clean, fast, accessible from any device on your network.</p>
+                </div>
+                
+                <div class="liquid-glass glass-refract glass-card glass-specular rounded-2xl p-8 fade-up relative" style="transition-delay: 0.35s;">
+                    <div class="w-14 h-14 icon-glass rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Zero Cloud Dependency</h3>
+                    <p class="text-gray-400 leading-relaxed">No server outages. No subscription cancellations. Your building keeps working, forever.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ How It Works ═══ -->
+    <section id="how-it-works" class="py-24 relative z-10 overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="orb absolute w-[450px] h-[450px] bg-accent-blue/6 top-[20%] left-[5%] orb-1"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    Three layers. <span class="gradient-text">Zero cloud.</span>
+                </h2>
+                <p class="text-xl text-gray-400">Install. Connect. Done.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 lg:gap-10">
+                <!-- Step 1 -->
+                <div class="relative fade-up">
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 h-full relative">
+                        <div class="absolute -top-4 left-8 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gradient-to-br from-orange to-orange-light shadow-lg shadow-orange/30">1</div>
+                        <div class="pt-4">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-orange/20 to-orange/5 border border-orange/20">
+                                <svg class="w-8 h-8 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-4">Edge Device</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                A compact compute unit sits in your building. This is HabaCasa's brain — powerful enough for real-time AI, small enough to fit anywhere.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="relative fade-up" style="transition-delay: 0.15s;">
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 h-full relative">
+                        <div class="absolute -top-4 left-8 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gradient-to-br from-accent-blue to-blue-400 shadow-lg shadow-accent-blue/30">2</div>
+                        <div class="pt-4">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-accent-blue/20 to-accent-blue/5 border border-accent-blue/20">
+                                <svg class="w-8 h-8 text-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-4">Home Assistant</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Connects to your devices through the world's largest open-source smart home platform. Thousands of devices. No vendor lock-in.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="relative fade-up" style="transition-delay: 0.3s;">
+                    <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 h-full relative">
+                        <div class="absolute -top-4 left-8 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm bg-gradient-to-br from-green-500 to-emerald-400 shadow-lg shadow-green-500/30">3</div>
+                        <div class="pt-4">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br from-green-500/20 to-green-500/5 border border-green-500/20">
+                                <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-4">Andrita AI Brain</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Our proprietary AI engine runs locally. Natural language, automation, anomaly detection — all processed on-site. Your data never leaves.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Use Cases ═══ -->
+    <section id="use-cases" class="py-24 relative z-10">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="orb absolute w-[400px] h-[400px] bg-purple-500/5 bottom-[10%] left-[20%] orb-3"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    One platform. <span class="gradient-text">Every building.</span>
+                </h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Home -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up group relative">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 icon-glass rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:border-orange/20 transition-colors">
+                            <span class="text-3xl">🏠</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Residential</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Voice-controlled everything. Security cameras that recognise faces locally. Routines that learn your habits without reporting them. A home that works for <span class="text-white font-medium">you</span> — not advertisers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Office -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up group relative" style="transition-delay: 0.1s;">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 icon-glass rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:border-accent-blue/20 transition-colors">
+                            <span class="text-3xl">🏢</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">SMB Office</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Automated HVAC. Occupancy-aware lighting. Meeting room management. Energy dashboards showing where money goes — without enterprise complexity or pricing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Healthcare -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up group relative" style="transition-delay: 0.2s;">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 icon-glass rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:border-green-500/20 transition-colors">
+                            <span class="text-3xl">🏥</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Healthcare</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                HIPAA-friendly by design. Patient data stays on-premises. Automated environment control for patient comfort. Zero compliance headaches from cloud data processing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Restaurant -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up group relative" style="transition-delay: 0.3s;">
+                    <div class="flex items-start space-x-5">
+                        <div class="w-16 h-16 icon-glass rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:border-purple-500/20 transition-colors">
+                            <span class="text-3xl">🍽️</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold mb-3">Hospitality</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Personalised room settings on arrival. Voice-controlled amenities. Guest data stays on property — a compliance advantage, not just a feature.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Privacy Section ═══ -->
+    <section class="py-24 relative z-10 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="orb absolute w-[600px] h-[600px] bg-orange/5 top-[30%] left-[30%] orb-1"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto text-center fade-up">
+                <div class="inline-flex items-center space-x-2 liquid-glass-subtle rounded-full px-4 py-2 mb-8">
+                    <svg class="w-5 h-5 text-green-400/80" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-green-400/80 text-sm font-medium tracking-wide">Privacy First</span>
+                </div>
+                
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    Your data never leaves.<br>
+                    <span class="gradient-text">Period.</span>
+                </h2>
+                
+                <p class="text-xl text-gray-400 mb-10 leading-relaxed">
+                    This isn't a toggle in settings. It's the architecture. Voice commands, camera feeds, automations — everything processed locally. There is no cloud fallback. There is no "anonymous" telemetry. There is no opt-out because there's nothing to opt out of.
+                </p>
+                
+                <div class="liquid-glass-strong glass-specular rounded-2xl p-10 inline-block relative">
+                    <p class="text-2xl font-semibold relative z-10">
+                        We <span class="text-orange">can't</span> see your data.<br>
+                        <span class="text-gray-500">We designed it that way.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Pricing ═══ -->
+    <section id="pricing" class="py-24 relative z-10">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="orb absolute w-[500px] h-[500px] bg-accent-blue/5 top-[20%] right-[10%] orb-2"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                    Simple pricing. <span class="gradient-text">No surprises.</span>
+                </h2>
+                <p class="text-xl text-gray-400">No per-device fees. No hidden costs. Edge device included.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Starter -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up relative">
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-semibold text-gray-400 mb-2">Starter</h3>
+                        <div class="flex items-end justify-center">
+                            <span class="text-5xl font-bold">£29</span>
+                            <span class="text-gray-500 ml-2">/month</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Perfect for homes</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Up to 50 devices</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">6 users</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">4 AI cameras</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Voice control</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Energy dashboard</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://haba.casa" target="_blank" class="block w-full text-center btn-glass-secondary text-white py-3 rounded-full font-medium">
+                        Get Started
+                    </a>
+                </div>
+                
+                <!-- Pro (Featured) -->
+                <div class="pricing-glow rounded-3xl fade-up" style="transition-delay: 0.1s;">
+                    <div class="liquid-glass-strong rounded-3xl p-8 h-full relative overflow-hidden">
+                        <!-- Specular highlight for featured card -->
+                        <div class="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/5 to-transparent pointer-events-none rounded-t-3xl"></div>
+                        
+                        <div class="text-center mb-8 relative z-10">
+                            <div class="inline-block liquid-glass-subtle text-orange text-xs font-bold px-3 py-1 rounded-full mb-4">MOST POPULAR</div>
+                            <h3 class="text-xl font-semibold mb-2">Pro</h3>
+                            <div class="flex items-end justify-center">
+                                <span class="text-5xl font-bold text-orange">£99</span>
+                                <span class="text-gray-400 ml-2">/month</span>
+                            </div>
+                            <p class="text-gray-500 mt-2">For businesses</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8 relative z-10">
+                            <li class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-300">Up to 200 devices</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-300">25 users</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-300">16 AI cameras</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-300">Everything in Starter</span>
+                            </li>
+                            <li class="flex items-center space-x-3">
+                                <svg class="w-5 h-5 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-300">Priority support</span>
+                            </li>
+                        </ul>
+                        
+                        <a href="https://haba.casa" target="_blank" class="btn-glass-primary block w-full text-center text-white py-3 rounded-full font-medium relative z-10">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Enterprise -->
+                <div class="liquid-glass glass-refract glass-card rounded-2xl p-8 fade-up relative" style="transition-delay: 0.2s;">
+                    <div class="text-center mb-8">
+                        <h3 class="text-xl font-semibold text-gray-400 mb-2">Enterprise</h3>
+                        <div class="flex items-end justify-center">
+                            <span class="text-5xl font-bold">Custom</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">For large deployments</p>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Unlimited devices</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Unlimited users</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Unlimited cameras</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">Custom integrations</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-400/70 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-300">On-site setup</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="mailto:ai@haba.casa" class="block w-full text-center btn-glass-secondary text-white py-3 rounded-full font-medium">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Glass Divider ═══ -->
+    <div class="glass-divider relative z-10"></div>
+
+    <!-- ═══ Final CTA ═══ -->
+    <section class="py-24 relative z-10 overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="orb absolute w-[500px] h-[500px] bg-orange/10 top-[10%] left-[20%] orb-1"></div>
+            <div class="orb absolute w-[400px] h-[400px] bg-accent-blue/10 bottom-[10%] right-[20%] orb-2"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-up">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+                Ready to take back control?
+            </h2>
+            <p class="text-xl text-gray-400 mb-10">
+                Join the waitlist for early access and founder pricing.
+            </p>
+            
+            <a href="https://haba.casa" target="_blank" class="btn-glass-primary inline-flex items-center space-x-2 text-white px-10 py-5 rounded-full font-semibold text-lg pulse-glow-soft">
+                <span>Join the Waitlist</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+            
+            <p class="mt-6 text-gray-600 text-sm">No spam. No cloud. Obviously.</p>
+        </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="py-12 relative z-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <a href="#" class="flex items-center space-x-3 mb-4 group">
+                        <div class="w-10 h-10 liquid-glass-subtle rounded-xl flex items-center justify-center group-hover:border-orange/30 transition-colors">
+                            <span class="text-orange font-bold text-lg">HC</span>
+                        </div>
+                        <span class="text-xl font-semibold">HabaCasa</span>
+                    </a>
+                    <p class="text-gray-500 max-w-sm mb-4">
+                        AI-native smart environment management by Edge-AI LTD. Based in the UK. Shipping worldwide.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.youtube.com/channel/UC8a3MtomYBHmtaf7x_AHwNQ" target="_blank" class="text-gray-500 hover:text-orange transition-colors" title="YouTube">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Links -->
+                <div>
+                    <h4 class="font-semibold mb-4 text-gray-300">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-500 hover:text-orange transition-colors">Features</a></li>
+                        <li><a href="#how-it-works" class="text-gray-500 hover:text-orange transition-colors">How It Works</a></li>
+                        <li><a href="#use-cases" class="text-gray-500 hover:text-orange transition-colors">Use Cases</a></li>
+                        <li><a href="#pricing" class="text-gray-500 hover:text-orange transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-semibold mb-4 text-gray-300">Contact</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mailto:ai@haba.casa" class="text-gray-500 hover:text-orange transition-colors">ai@haba.casa</a></li>
+                        <li><a href="https://haba.casa" target="_blank" class="text-gray-500 hover:text-orange transition-colors">haba.casa</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="glass-divider mb-8"></div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-600 text-sm">© 2026 Edge-AI LTD. All rights reserved.</p>
+                <p class="text-gray-600 text-sm mt-2 md:mt-0">Your space runs itself.™</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══ JavaScript ═══ -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // Fade in on scroll (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { root: null, rootMargin: '0px', threshold: 0.1 });
+        
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Nav glass effect on scroll
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
