@@ -275,7 +275,7 @@
             filter: blur(32px); opacity: 0.6;
         }
         .video-frame { position: relative; border-radius: var(--radius); overflow: hidden; background: var(--bg-2); aspect-ratio: 16/9; }
-        .video-frame iframe { width: 100%; height: 100%; border: none; }
+        .video-frame iframe, .video-frame video { width: 100%; height: 100%; border: none; object-fit: cover; }
         .video-overlay {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.3); cursor: pointer; transition: opacity 0.3s;
@@ -405,6 +405,28 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
 
+        /* ── Lifestyle image grid ── */
+        .img-showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+        .img-showcase img { width: 100%; height: 280px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--glass-border, rgba(255,255,255,0.08)); transition: transform 0.3s; }
+        .img-showcase img:hover { transform: scale(1.03); }
+        .img-showcase .img-wide { grid-column: span 2; }
+        .img-showcase .img-tall { grid-row: span 2; height: 100%; }
+
+        .img-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-top: 64px; }
+        .img-split img { width: 100%; border-radius: var(--radius); border: 1px solid var(--glass-border, rgba(255,255,255,0.08)); }
+        .img-split-text h3 { font-size: 1.6rem; margin-bottom: 16px; color: var(--text); }
+        .img-split-text p { color: var(--text-2); line-height: 1.7; font-size: 1.05rem; }
+        .img-split.reverse { direction: rtl; }
+        .img-split.reverse > * { direction: ltr; }
+
+        @media(max-width:768px) {
+            .img-showcase { grid-template-columns: 1fr; }
+            .img-showcase .img-wide { grid-column: span 1; }
+            .img-showcase .img-tall { grid-row: span 1; height: 280px; }
+            .img-split { grid-template-columns: 1fr; gap: 24px; }
+            .img-split.reverse { direction: ltr; }
+        }
+
         /* ── Mobile tweaks ── */
         @media(max-width:640px) {
             .section { padding: 80px 0; }
@@ -505,15 +527,8 @@
                 </div>
             </div>
 
-            <div class="video-wrap reveal reveal-delay-2" id="demo">
-                <div class="video-glow"></div>
-                <div class="video-frame glass" id="video-frame">
-                    <div class="video-overlay" id="video-overlay" role="button" tabindex="0" aria-label="Play video">
-                        <div class="play-btn">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                    </div>
-                </div>
+            <div class="reveal reveal-delay-2" id="demo">
+                <img src="images/family-living-room.jpg" alt="Family using HabaCasa smart home" style="width:100%; border-radius: var(--radius); border: 1px solid var(--glass-border, rgba(255,255,255,0.08)); box-shadow: 0 16px 64px rgba(0,0,0,0.3);">
             </div>
         </div>
     </div>
@@ -586,6 +601,15 @@
                 <p>No internet? No problem. Your space keeps running. No company can switch off your smart home by shutting down a server.</p>
             </div>
         </div>
+
+        <!-- Lifestyle image showcase -->
+        <div class="img-showcase reveal">
+            <img src="images/smart-welcome.jpg" alt="Smart home welcoming you" class="img-wide" loading="lazy">
+            <img src="images/device-shelf.jpg" alt="HabaCasa edge device" loading="lazy">
+            <img src="images/kitchen-morning.jpg" alt="Family morning with smart home" loading="lazy">
+            <img src="images/dashboard-phone.jpg" alt="Smart home dashboard" loading="lazy">
+            <img src="images/couple-evening.jpg" alt="Couple enjoying smart home" class="img-wide" loading="lazy">
+        </div>
     </div>
 </section>
 <div class="divider"></div>
@@ -624,22 +648,31 @@
         <div class="text-center" style="margin-bottom:64px;">
             <h2 class="reveal">For homes.<br>For businesses.<br><span class="gradient-text">For anyone who values privacy.</span></h2>
         </div>
-        <div class="grid grid-2">
-            <div class="glass glass-refract usecase reveal">
-                <div class="usecase-icon">🏠</div>
-                <div><h3>Your Home</h3><p>Voice control, smart routines, cameras that recognise your family — without a corporation watching. A home that truly works for you.</p></div>
+
+        <!-- Split: Home -->
+        <div class="img-split reveal">
+            <img src="images/couple-evening.jpg" alt="Couple in smart home" loading="lazy">
+            <div class="img-split-text">
+                <h3>🏠 Your Home</h3>
+                <p>Voice control, smart routines, cameras that recognise your family — without a corporation watching. Lights that adjust to your mood, heating that knows your schedule, and security that stays local. A home that truly works for you.</p>
             </div>
-            <div class="glass glass-refract usecase reveal reveal-delay-1">
-                <div class="usecase-icon">🏢</div>
-                <div><h3>Your Office</h3><p>Occupancy-aware lighting, automated climate control, meeting room management. Enterprise smarts without enterprise complexity or pricing.</p></div>
+        </div>
+
+        <!-- Split: Hospitality (reversed) -->
+        <div class="img-split reverse reveal" style="margin-top:48px;">
+            <img src="images/restaurant-smart.jpg" alt="Smart restaurant" loading="lazy">
+            <div class="img-split-text">
+                <h3>🏨 Hospitality & Business</h3>
+                <p>Personalised room settings on arrival. Automated climate and lighting for restaurants, offices, and hotels. Guest data stays on your property — a feature, not a trade-off. Enterprise smarts without enterprise complexity.</p>
             </div>
-            <div class="glass glass-refract usecase reveal reveal-delay-2">
-                <div class="usecase-icon">🏥</div>
-                <div><h3>Healthcare</h3><p>Patient data stays on-site by design. Automated environment control for comfort. Zero compliance headaches from cloud data processing.</p></div>
-            </div>
-            <div class="glass glass-refract usecase reveal reveal-delay-3">
-                <div class="usecase-icon">🏨</div>
-                <div><h3>Hospitality</h3><p>Personalised room settings on arrival. Voice-controlled amenities for guests. Their data stays on your property — a feature, not a trade-off.</p></div>
+        </div>
+
+        <!-- Split: Accessible -->
+        <div class="img-split reveal" style="margin-top:48px;">
+            <img src="images/elderly-accessible.jpg" alt="Accessible smart home" loading="lazy">
+            <div class="img-split-text">
+                <h3>🏥 Healthcare & Accessibility</h3>
+                <p>Patient data stays on-site by design. Simple voice commands for those who need them most. Automated environment control for comfort. Zero compliance headaches from cloud data processing. Technology that empowers everyone.</p>
             </div>
         </div>
     </div>
@@ -832,17 +865,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // ── Video lazy load ──
-const overlay = document.getElementById('video-overlay');
-const frame = document.getElementById('video-frame');
-overlay.addEventListener('click', () => {
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube.com/embed/mG_5l9cWQBQ?autoplay=1&rel=0&modestbranding=1';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    iframe.allowFullscreen = true;
-    iframe.title = 'HabaCasa Demo';
-    frame.appendChild(iframe);
-    overlay.classList.add('hidden');
-});
+// Video embed removed — using hero image instead
 
 // ── FAQ accordion ──
 document.querySelectorAll('.faq-q').forEach(q => {
