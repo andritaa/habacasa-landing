@@ -2,9 +2,12 @@ import { betterAuth } from "better-auth";
 import { organization, admin } from "better-auth/plugins";
 import { Pool } from "pg";
 
+const dbUrl = process.env.DATABASE_URL || "";
+const needsSsl = dbUrl.includes("rlwy.net") || (dbUrl.includes("railway") && !dbUrl.includes("railway.internal"));
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("railway") ? { rejectUnauthorized: false } : undefined,
+  connectionString: dbUrl,
+  ssl: needsSsl ? { rejectUnauthorized: false } : false,
 });
 
 export const auth = betterAuth({

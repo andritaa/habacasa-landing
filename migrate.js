@@ -1,8 +1,13 @@
 const { Pool } = require("pg");
 
+// Internal Railway hostnames (*.railway.internal) don't use SSL
+// External Railway proxies (*.rlwy.net) do
+const dbUrl = process.env.DATABASE_URL || "";
+const needsSsl = dbUrl.includes("rlwy.net") || (dbUrl.includes("railway") && !dbUrl.includes("railway.internal"));
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("railway") ? { rejectUnauthorized: false } : undefined,
+  connectionString: dbUrl,
+  ssl: needsSsl ? { rejectUnauthorized: false } : false,
 });
 
 const schema = `
