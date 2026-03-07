@@ -421,7 +421,7 @@ export default function Home() {
                 <li><CheckIcon /> SLA &amp; dedicated support</li>
                 <li><CheckIcon /> Multi-site management</li>
               </ul>
-              <a href="mailto:hello@haba.casa" className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }}>Contact Sales</a>
+              <a href="mailto:andrita@haba.casa" className="btn btn-secondary" style={{ width: "100%", justifyContent: "center" }}>Contact Sales</a>
             </div>
           </div>
         </div>
@@ -485,8 +485,20 @@ export default function Home() {
             <div>
               <h4>Contact</h4>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <a href="mailto:hello@haba.casa">hello@haba.casa</a>
-                <a href="https://www.youtube.com/channel/UC8a3MtomYBHmtaf7x_AHwNQ" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <a href="mailto:andrita@haba.casa">andrita@haba.casa</a>
+              </div>
+            </div>
+            <div>
+              <h4>Follow Us</h4>
+              <div style={{ display: "flex", gap: "16px", alignItems: "center", marginTop: "4px" }}>
+                {/* YouTube */}
+                <a href="https://www.youtube.com/channel/UC8a3MtomYBHmtaf7x_AHwNQ" target="_blank" rel="noopener noreferrer" aria-label="YouTube" style={{ color: "var(--text-3)", transition: "color 0.2s" }} onMouseEnter={e => (e.currentTarget.style.color="#FF0000")} onMouseLeave={e => (e.currentTarget.style.color="var(--text-3)")}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                {/* Twitter / X */}
+                <a href="https://twitter.com/habacasa" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" style={{ color: "var(--text-3)", transition: "color 0.2s" }} onMouseEnter={e => (e.currentTarget.style.color="#1DA1F2")} onMouseLeave={e => (e.currentTarget.style.color="var(--text-3)")}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
               </div>
             </div>
           </div>
